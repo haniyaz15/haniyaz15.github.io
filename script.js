@@ -194,20 +194,3 @@ revealElements.forEach(element => {
     revealObserver.observe(element);
 
 });
-
-
-/* =========================
-   CONTACT FORM
-========================= */
-
-const form = document.querySelector("form");
-
-form.addEventListener("submit", (event) => {
-
-    event.preventDefault();
-
-    alert(
-        "Thank you! Your message form is ready. Connect a form service later to receive messages."
-    );
-
-});
