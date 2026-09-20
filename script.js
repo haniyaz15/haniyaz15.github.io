@@ -1,77 +1,81 @@
 /* =========================
-   TYPING EFFECT
+TYPING EFFECT
 ========================= */
 
 const typingText = document.getElementById("typing");
 
 const words = [
-    "Graphic Designer",
-    "Digital Marketer",
-    "Data Analytics Learner",
-    "Developer"
+"Graphic Designer",
+"Digital Marketer",
+"Data Analytics Learner",
+"Developer"
 ];
 
 let wordIndex = 0;
 let charIndex = 0;
 let deleting = false;
 
-
 function typeEffect() {
 
-    const currentWord = words[wordIndex];
+```
+const currentWord = words[wordIndex];
 
-    if (!deleting) {
+if (!deleting) {
 
-        typingText.textContent =
-            currentWord.substring(0, charIndex + 1);
+    typingText.textContent =
+        currentWord.substring(0, charIndex + 1);
 
-        charIndex++;
+    charIndex++;
 
-        if (charIndex === currentWord.length) {
+    if (charIndex === currentWord.length) {
 
-            deleting = true;
+        deleting = true;
 
-            setTimeout(typeEffect, 1300);
+        setTimeout(typeEffect, 1300);
 
-            return;
-        }
-
-    } else {
-
-        typingText.textContent =
-            currentWord.substring(0, charIndex - 1);
-
-        charIndex--;
-
-        if (charIndex === 0) {
-
-            deleting = false;
-
-            wordIndex++;
-
-            if (wordIndex === words.length) {
-                wordIndex = 0;
-            }
-
-        }
+        return;
     }
 
-    setTimeout(
-        typeEffect,
-        deleting ? 60 : 100
-    );
+} else {
+
+    typingText.textContent =
+        currentWord.substring(0, charIndex - 1);
+
+    charIndex--;
+
+    if (charIndex === 0) {
+
+        deleting = false;
+
+        wordIndex++;
+
+        if (wordIndex === words.length) {
+            wordIndex = 0;
+        }
+
+    }
+}
+
+setTimeout(
+    typeEffect,
+    deleting ? 60 : 100
+);
+```
+
 }
 
 typeEffect();
 
-
 /* =========================
-   MOBILE MENU
+MOBILE MENU
 ========================= */
 
 const menuIcon = document.getElementById("menuIcon");
 const navbar = document.getElementById("navbar");
 
+if (menuIcon && navbar) {
+
+```
 menuIcon.addEventListener("click", () => {
 
     navbar.classList.toggle("active");
@@ -91,106 +95,202 @@ menuIcon.addEventListener("click", () => {
     }
 
 });
+```
 
+}
 
-/* Close menu when link clicked */
+/* =========================
+CLOSE MOBILE MENU
+========================= */
 
 document.querySelectorAll("nav a").forEach(link => {
 
-    link.addEventListener("click", () => {
+```
+link.addEventListener("click", () => {
 
+    if (navbar) {
         navbar.classList.remove("active");
+    }
+
+    if (menuIcon) {
 
         const icon = menuIcon.querySelector("i");
 
         icon.classList.remove("fa-xmark");
         icon.classList.add("fa-bars");
 
-    });
+    }
+
+});
+```
 
 });
 
-
 /* =========================
-   ACTIVE NAVBAR
+ACTIVE NAVBAR
 ========================= */
 
 const sections = document.querySelectorAll("section");
 const navLinks = document.querySelectorAll("nav a");
 
-
 window.addEventListener("scroll", () => {
 
-    let current = "";
+```
+let current = "";
 
-    sections.forEach(section => {
+sections.forEach(section => {
 
-        const sectionTop =
-            section.offsetTop - 250;
+    const sectionTop =
+        section.offsetTop - 250;
 
-        const sectionHeight =
-            section.clientHeight;
+    const sectionHeight =
+        section.clientHeight;
 
-        if (
-            window.scrollY >= sectionTop &&
-            window.scrollY < sectionTop + sectionHeight
-        ) {
+    if (
+        window.scrollY >= sectionTop &&
+        window.scrollY < sectionTop + sectionHeight
+    ) {
 
-            current = section.getAttribute("id");
+        current = section.getAttribute("id");
 
-        }
-
-    });
-
-
-    navLinks.forEach(link => {
-
-        link.classList.remove("active");
-
-        if (
-            link.getAttribute("href") === "#" + current
-        ) {
-
-            link.classList.add("active");
-
-        }
-
-    });
+    }
 
 });
 
 
+navLinks.forEach(link => {
+
+    link.classList.remove("active");
+
+    if (
+        link.getAttribute("href") === "#" + current
+    ) {
+
+        link.classList.add("active");
+
+    }
+
+});
+```
+
+});
+
 /* =========================
-   SCROLL REVEAL
+SCROLL REVEAL
 ========================= */
 
 const revealElements =
-    document.querySelectorAll(".reveal");
-
+document.querySelectorAll(".reveal");
 
 const revealObserver =
-    new IntersectionObserver(
-        (entries) => {
+new IntersectionObserver(
+(entries) => {
 
-            entries.forEach(entry => {
+```
+        entries.forEach(entry => {
 
-                if (entry.isIntersecting) {
+            if (entry.isIntersecting) {
 
-                    entry.target.classList.add("show");
+                entry.target.classList.add("show");
 
-                }
+            }
 
-            });
+        });
 
-        },
-        {
-            threshold: 0.12
-        }
-    );
-
+    },
+    {
+        threshold: 0.12
+    }
+);
+```
 
 revealElements.forEach(element => {
 
-    revealObserver.observe(element);
+```
+revealObserver.observe(element);
+```
 
 });
+
+/* =========================
+CONTACT FORM - FORMSPREE
+========================= */
+
+const contactForm =
+document.querySelector(".contact-form form");
+
+if (contactForm) {
+
+```
+contactForm.addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+    const submitButton =
+        contactForm.querySelector("button[type='submit']");
+
+    const originalText =
+        submitButton.innerHTML;
+
+
+    submitButton.disabled = true;
+
+    submitButton.innerHTML =
+        'Sending... <i class="fa-solid fa-spinner fa-spin"></i>';
+
+
+    try {
+
+        const response = await fetch(
+            contactForm.action,
+            {
+                method: "POST",
+                body: new FormData(contactForm),
+                headers: {
+                    "Accept": "application/json"
+                }
+            }
+        );
+
+
+        if (response.ok) {
+
+            submitButton.innerHTML =
+                'Message Sent <i class="fa-solid fa-check"></i>';
+
+            contactForm.reset();
+
+            setTimeout(() => {
+
+                submitButton.innerHTML =
+                    originalText;
+
+                submitButton.disabled = false;
+
+            }, 3000);
+
+
+        } else {
+
+            throw new Error("Form submission failed.");
+
+        }
+
+
+    } catch (error) {
+
+        submitButton.disabled = false;
+
+        submitButton.innerHTML =
+            'Try Again <i class="fa-solid fa-rotate-right"></i>';
+
+        alert(
+            "Something went wrong. Please try again."
+        );
+
+    }
+
+});
+```
+
+}
